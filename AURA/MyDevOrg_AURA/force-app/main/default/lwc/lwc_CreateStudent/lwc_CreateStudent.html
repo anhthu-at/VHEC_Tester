@@ -1,0 +1,45 @@
+<template>
+    <lightning-card title="新規学生" icon-name="standard:contact">
+        <div class="slds-p-around_medium">
+            <!-- First Name -->
+            <lightning-input type="text" name="Firstname__c" label="姓" value={Firstname__c} class="slds-m-bottom_medium"
+                onchange={handleInputChange}>
+            </lightning-input>
+
+            <!-- Last Name -->
+            <lightning-input type="text" name="Lastname__c" label="名" value={Lastname__c} class="slds-m-bottom_medium"
+                onchange={handleInputChange}>
+            </lightning-input>
+
+            <!-- Birthday -->
+            <lightning-input type="date" name="Birthday__c" label="生年月日" value={student.Birthday__c}
+                class="slds-m-bottom_medium" onchange={handleInputChange}>
+            </lightning-input>
+
+            <!-- Class Combobox -->
+            <lightning-combobox required name="Class_look__c" label="クラス" value={student.Class_look__c}
+                options={classOptions} placeholder="--なし--" onchange={handleInputChange} class="slds-m-bottom_medium">
+            </lightning-combobox>
+
+            <!-- Gender picklist -->
+            <lightning-combobox label="性別" name="Gender__c" value={student.Gender__c} options={genderOptions}
+                placeholder="--なし--" onchange={handleInputChange} class="slds-m-bottom_medium">
+            </lightning-combobox>
+
+            <!-- Learning Status picklist -->
+            <lightning-combobox label="Learning Status" name="LearningStatus__c" value={student.LearningStatus__c}
+                placeholder="--なし--" options={learningStatusOptions} onchange={handleInputChange}
+                class="slds-m-bottom_medium">
+            </lightning-combobox>
+
+            <!-- Save Button -->
+            <lightning-button variant="brand" label="保存" onclick={insertStudent} class="slds-m-top_medium">
+            </lightning-button>
+        </div>
+
+        <!-- Display Message -->
+        <div>
+            <lightning-formatted-text value={message}></lightning-formatted-text>
+        </div>
+    </lightning-card>
+</template>

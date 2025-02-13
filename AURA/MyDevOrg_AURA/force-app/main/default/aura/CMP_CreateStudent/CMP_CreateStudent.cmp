@@ -1,0 +1,88 @@
+<aura:component controller="CMP_CreateStudentCtrls" implements="force:appHostable,flexipage:availableForAllPageTypes"
+    access="global">
+
+    <!-- Alert -->
+    <aura:attribute name="notifLib" type="Object" />
+    <!-- ID -->
+    <!-- <aura:attribute name="recordId" type="String" /> -->
+    <!-- Attributes -->
+    <aura:attribute name="message" type="String" />
+
+    <!-- Gender -->
+    <aura:attribute name="loadGenderOptions" type="List" />
+    <aura:attribute name="selectedGender" type="String" />
+
+    <aura:attribute name="targetObjectNameGender" type="String" default="Student__c" />
+    <aura:attribute name="targetFieldNameGender" type="String" default="Gender__c" />
+    <aura:attribute name="picklistOptionsGender" type="List" />
+    <aura:attribute name="selectedValueGender" type="String" />
+
+    <!-- Status -->
+    <aura:attribute name="selectedStatus" type="String" />
+    <aura:attribute name="targetObjectNameStatus" type="String" default="Student__c" />
+    <aura:attribute name="targetFieldNameStatus" type="String" default="LearningStatus__c" />
+    <aura:attribute name="picklistOptionsStatus" type="List" />
+    <aura:attribute name="selectedValueStatus" type="String" />
+
+    <!-- Class -->
+    <aura:attribute name="classOptions" type="List" />
+    <aura:attribute name="selectedClass" type="String" />
+
+    <!-- Value data student -->
+    <aura:attribute name="student" type="Student__c" default="{'sobjectType': 'Student__c'}" />
+    <aura:attribute name="Firstname__c" type="String" />
+    <aura:attribute name="Lastname__c" type="String" />
+    <aura:attribute name="Birthday__c" type="Date" />
+
+    <!-- Event -->
+    <aura:registerEvent name="CMP_Reload" type="c:CMP_Reload" />
+    <!-- action create not use handler -->
+    <!-- <aura:handler name="CMP_Reload" event="c:CMP_Reload" action="{!c.reloadData}" /> -->
+
+    <!-- Notification Library -->
+    <lightning:notificationsLibrary aura:id="notifLib" />
+
+
+    <!-- Handlers -->
+    <aura:handler name="init" value="{!this}" action="{!c.getDataPickList}" />
+
+    <!-- Handler to load class options on component initialization -->
+    <aura:handler name="init" value="{!this}" action="{!c.loadClassOptions}" />
+
+    <!-- get gender and learning status old -->
+    <!-- Handlers gender options -->
+    <aura:handler name="init" value="{!this}" action="{!c.fetchGenderOptions}" />
+
+    <!-- Handler to fetch LearningStatus options on component load -->
+    <aura:handler name="init" value="{!this}" action="{!c.fetchLearningStatusOptions}" />
+    <!-- Handler to load class options on component initialization -->
+    <aura:handler name="init" value="{!this}" action="{!c.loadClassOptions}" />
+
+
+
+    <!-- Form insert value -->
+    <lightning:card title="新規学生" iconName="standard:contact">
+        <div class="slds-p-around_medium">
+            <lightning:input type="text" name="Firstname" label="姓" value="{!v.Firstname__c}" />
+            <lightning:input type="text" name="Lastname" label="名" value="{!v.Lastname__c}" />
+            <lightning:input type="date" name="birthday" label="生年月日" value="{!v.Birthday__c}" />
+
+
+            <lightning:combobox required="true" name="class" label="クラス" value="{!v.student.Class_look__c}"
+                options="{!v.classOptions}" placeholder="--なし--" />
+
+            <lightning:combobox name="gender" label="性別" value="{!v.student.Gender__c}"
+                options="{!v.picklistOptionsGender}" placeholder="--なし--" />
+
+            <lightning:combobox name="status" label="ステータス" value="{!v.student.LearningStatus__c}"
+                options="{!v.picklistOptionsStatus}" placeholder="--なし--" />
+
+
+
+            <lightning:button variant="brand" label="保存" onclick="{!c.insertStudent}" />
+        </div>
+        <div>
+            <lightning:formattedText value="{!v.message}" />
+        </div>
+    </lightning:card>
+</aura:component>

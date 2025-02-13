@@ -1,0 +1,64 @@
+.THIS .input-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: flex-start;
+}
+
+.THIS .custom-input,
+.THIS lightning-select {
+    flex: 1;
+    min-width: 180px;
+    max-width: 200px;
+    padding: 8px;
+}
+
+
+.THIS lightning-select {
+    display: block;
+}
+
+.THIS .custom-input:focus,
+.THIS lightning-select:focus {
+    border-color: #0070d2;
+    box-shadow: 0 0 5px rgba(0, 112, 210, 0.5);
+}
+
+.THIS .control-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.THIS .info-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.THIS .info-left {
+    width: 50%;
+}
+
+.THIS .info-right {
+    width: 50%;
+}
+.THIS .slds-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999; /* Đảm bảo modal luôn nổi trên các phần tử khác */
+}
+.THIS .custom-button-clear {
+    background-color: #d3d3d3; /* Màu xám khi bị disable */
+    color: #ffffff;
+    border: none;
+}
+
+.THIS .custom-button-clear.enabled {
+    background-color: #0070d2; /* Màu xanh khi có dữ liệu */
+    color: #ffffff;
+}

@@ -1,0 +1,4 @@
+.THIS .custom-card {
+    max-width: 100px;  /* Đặt max width cho card */
+    margin: 0 auto;    /* Căn giữa card */
+}

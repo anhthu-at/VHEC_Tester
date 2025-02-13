@@ -1,0 +1,51 @@
+<template>
+    <template if:true={student}>
+        <lightning-card title="学生を編集">
+            <div class="slds-p-around_medium">
+                <!-- Thông báo lỗi -->
+                <template if:true={error}>
+                    <div class="slds-text-color_error">{error}</div>
+                </template>
+
+                <!-- Hiển thị chi tiết học sinh -->
+                <template if:true={student}>
+                    <lightning-input label="姓" name="Firstname__c" value={student.Firstname__c}
+                        onchange={handleInputChange}></lightning-input>
+
+                    <lightning-input label="名" name="Lastname__c" value={student.Lastname__c}
+                        onchange={handleInputChange}></lightning-input>
+
+                    <lightning-input label="生年月日" name="Birthday__c" value={student.Birthday__c}
+                        onchange={handleInputChange}></lightning-input>
+
+                    <!-- Combobox cho giới tính -->
+                    <lightning-combobox label="性別" name="Gender__c" value={student.Gender__c}
+                        options={genderOptions} onchange={handleInputChange}></lightning-combobox>
+
+                    <!-- Combobox cho tình trạng học tập -->
+                    <lightning-combobox label="Status" name="LearningStatus__c"
+                        value={student.LearningStatus__c} options={learningStatusOptions}
+                        onchange={handleInputChange}></lightning-combobox>
+
+                    <!-- Combobox cho lớp -->
+                    <lightning-combobox label="クラス" name="Class_look__c" value={student.Class_look__c}
+                        options={classOptions} onchange={handleInputChange}></lightning-combobox>
+
+                    <lightning-button variant="brand" label="Update Student"
+                        onclick={handleUpdateStudent}></lightning-button>
+                </template>
+            </div>
+            <div>
+                <!-- Thông báo thành công -->
+                <template if:true={successMessage}>
+                    <div class="success-message">{successMessage}</div>
+                </template>
+
+                <!-- Thông báo lỗi -->
+                <template if:true={error}>
+                    <div class="error-message">{error}</div>
+                </template>
+            </div>
+        </lightning-card>
+    </template>
+</template>

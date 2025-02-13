@@ -1,0 +1,64 @@
+<aura:component controller="CMP_DetailStudent" implements="force:appHostable,flexipage:availableForAllPageTypes"
+    access="global">
+
+    <!-- Attribute get data student -->
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="student" type="Student__c" />
+
+    <!-- Close Modal -->
+    <aura:registerEvent name="closeModalEvent" type="c:CMP_CloseEventModal" />
+
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+
+    <lightning:card title="学生の詳細" class="custom-card">
+        <aura:if isTrue="{!not(empty(v.student))}">
+            <div class="slds-grid slds-wrap">
+                <!-- StudentCode and Gender in the same row -->
+                <div class="slds-col slds-size_1-of-2">
+                    <p><strong>学生コード</strong></p>
+                    <p>{!v.student.StudentCode__c}</p>
+                </div>
+                <div class="slds-col slds-size_1-of-2">
+                    <p><strong>性別</strong></p>
+                    <p>{!v.student.Gender__c}</p>
+                </div>
+            </div>
+
+            <div class="slds-grid slds-wrap">
+                <!-- Firstname and Class Look in the same row -->
+                <div class="slds-col slds-size_1-of-2">
+                    <p><strong>姓</strong></p>
+                    <p>{!v.student.Firstname__c}</p>
+                </div>
+                <div class="slds-col slds-size_1-of-2">
+                    <p><strong>クラス</strong></p>
+                    <p>{!v.student.Class_look__r.Name}</p>
+                </div>
+            </div>
+
+            <div class="slds-grid slds-wrap">
+                <!-- Lastname and Status in the same row -->
+                <div class="slds-col slds-size_1-of-2">
+                    <p><strong>名</strong></p>
+                    <p>{!v.student.Lastname__c}</p>
+                </div>
+                <div class="slds-col slds-size_1-of-2">
+                    <p><strong>Status</strong></p>
+                    <p>{!v.student.LearningStatus__c}</p>
+                </div>
+            </div>
+
+            <div class="slds-grid slds-wrap">
+                <!-- Birthday below Lastname -->
+                <div class="slds-col slds-size_1-of-2">
+                    <p><strong>生年月日</strong></p>
+                    <p>{!v.student.Birthday__c}</p>
+                </div>
+            </div>
+        </aura:if>
+
+        <div class="slds-m-top_medium slds-text-align_right">
+            <lightning:button label="閉じる" variant="neutral" onclick="{!c.handleClose}" />
+        </div>
+    </lightning:card>
+</aura:component>

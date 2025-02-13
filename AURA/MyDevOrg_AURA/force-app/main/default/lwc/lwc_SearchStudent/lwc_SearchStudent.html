@@ -1,0 +1,213 @@
+<template>
+    <lightning-card title="Thông tin sinh viên" icon-name="custom:custom14">
+        <div class="slds-p-around_medium slds-grid slds-gutters">
+            <div class="slds-col slds-size_1-of-6">
+                <lightning-input class="custom-input" label="学生コード" value={studentCode}
+                    data-id="studentCode"></lightning-input>
+            </div>
+            <div class="slds-col slds-size_1-of-6">
+                <lightning-input class="custom-input" label="名姓" value={fullName}
+                    data-id="studentName"></lightning-input>
+            </div>
+            <div class="slds-col slds-size_1-of-6">
+                <lightning-input class="custom-input" label="クラス" value={classCode}
+                    data-id="studentClass"></lightning-input>
+            </div>
+            <div class="slds-col slds-size_1-of-6">
+                <lightning-input class="custom-input" label="生年月日" type="date" value={startBirthDate}
+                    data-id="studentStartBDay"></lightning-input>
+            </div>
+            <div class="slds-col slds-size_1-of-6">
+                <lightning-input class="custom-input" label="生年月日" type="date" value={endBirthDate}
+                    data-id="studentEndBDay"></lightning-input>
+            </div>
+            <div class="slds-col slds-size_1-of-6">
+                <lightning-combobox class="custom-input" label="性別" value={selectedValueGender} options={genderOptions}
+                    data-id="studentGender" onchange={handleGenderChange}>
+                </lightning-combobox>
+            </div>
+        </div>
+
+        <div class="slds-p-around_medium input-row">
+            <lightning-button class="custom-button" label="検索" onclick={searchStudents}
+                icon-name="utility:search"></lightning-button>
+            <lightning-button class="custom-button" label="作旅" onclick={openCreateModal}
+                icon-name="utility:add"></lightning-button>
+            <lightning-button class="custom-button" label="クリア" onclick={clearForm}
+                icon-name="utility:close"></lightning-button>
+            <lightning-button class="custom-button" label="削除" onclick={openDeleteModal} variant={deleteButtonVariant}
+                disabled={deleteButtonDisabled} icon-name="utility:delete"></lightning-button>
+        </div>
+
+        <!-- Table data list student -->
+        <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+            <thead>
+                <tr class="slds-line-height_reset">
+                    <th scope="col">
+                        <lightning-input type="checkbox" onchange={selectAllStudents}></lightning-input>
+                    </th>
+                    <th scope="col"><b>学生コード</b></th>
+                    <th scope="col"><b>名</b></th>
+                    <th scope="col"><b>姓</b></th>
+                    <th scope="col"><b>クラス</b></th>
+                    <th scope="col"><b>生年月日</b></th>
+                    <th scope="col"><b>性別</b></th>
+                    <th scope="col"><b>アクシヨン</b></th>
+                </tr>
+            </thead>
+            <tbody>
+                <template for:each={students} for:item="student">
+                    <tr key={student.Id} class="slds-hint-parent">
+                        <td>
+                            <lightning-input type="checkbox" onchange={handleStudentSelection}
+                                checked={student.isSelected} value={student.Id}></lightning-input>
+                        </td>
+                        <td>{student.StudentCode__c}</td>
+                        <td>{student.Firstname__c}</td>
+                        <td>{student.Lastname__c}</td>
+                        <td>{student.Class_look__r.Name}</td>
+                        <td>{student.Birthday__c}</td>
+                        <td>{student.Gender__c}</td>
+                        <td>
+                            <lightning-button-icon icon-name="utility:preview" title="Xem" onclick={openDetailModal}
+                                value={student.Id}></lightning-button-icon>
+                            <lightning-button-icon icon-name="utility:edit" title="Chỉnh sửa" onclick={openUpdateModal}
+                                value={student.Id}></lightning-button-icon>
+                            <lightning-button-icon icon-name="utility:delete" title="Xóa" onclick={openDeleteModal}
+                                value={student.Id}></lightning-button-icon>
+                        </td>
+                    </tr>
+                </template>
+            </tbody>
+        </table>
+
+        <!-- Record count -->
+        <div class="record-count">
+            <strong>Select: {selectedCount} / {totalRecords}</strong>
+        </div>
+
+        <!-- Pagination Controls -->
+        <div class="slds-p-around_medium control-page">
+            <lightning-button label="&lt;&lt;" onclick={firstPage} disabled={isFirstPage}
+                class="slds-m-right_small"></lightning-button>
+            <lightning-button label="&lt;" onclick={prevPage} disabled={isFirstPage}
+                class="slds-m-right_small"></lightning-button>
+
+            <div class="slds-button-group">
+                <template for:each={pageList} for:item="page">
+                    <lightning-button key={page.number} label={page.number} class={page.buttonClass}
+                        onclick={changePage}></lightning-button>
+                </template>
+            </div>
+
+            <lightning-button label="&gt;" onclick={nextPage} disabled={isLastPage}
+                class="slds-m-left_small"></lightning-button>
+            <lightning-button label="&gt;&gt;" onclick={lastPage} disabled={isLastPage}
+                class="slds-m-left_small"></lightning-button>
+
+        </div>
+
+
+    </lightning-card>
+
+
+    <!-- Modal Detail -->
+    <template if:true={isDetailModalOpen}>
+        <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open slds-modal_medium"
+            aria-labelledby="modal-heading-02" aria-modal="true" aria-describedby="modal-content-id-2">
+            <div class="slds-modal__container">
+                <!-- Modal Header -->
+                <header class="slds-modal__header">
+                    <lightning-button-icon icon-name="utility:close" onclick={closeDetailModal} alternative-text="Close"
+                        variant="bare-inverse" class="slds-modal__close"></lightning-button-icon>
+                </header>
+
+                <!-- Modal Body -->
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-2">
+                    
+                    <!-- Lwc_DetailStudent -->
+                    <c-Lwc_-detail-student record-id={selectedStudentId}></c-Lwc_-detail-student>
+                </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+
+
+    <!-- Modal Delete -->
+    <template if:true={isDeleteModalOpen}>
+        <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open slds-modal_medium"
+            aria-labelledby="modal-heading-02" aria-modal="true" aria-describedby="modal-content-id-2">
+            <div class="slds-modal__container">
+                <!-- Modal Header -->
+                <header class="slds-modal__header">
+                    <lightning-button-icon icon-name="utility:close" onclick={closeDeleteModal} alternative-text="Close"
+                        variant="bare-inverse" class="slds-modal__close"></lightning-button-icon>
+                </header>
+
+                <!-- Modal Body -->
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-3">
+                    <!-- <p>Selected Student ID: {selectedStudentId}</p> In ra studentId -->
+
+                    <footer class="slds-modal__footer">
+                        <lightning-button variant="neutral" label="Cancel"
+                            onclick={closeDeleteModal}></lightning-button>
+                        <lightning-button variant="destructive" label="Confirm Delete"
+                            onclick={confirmDelete}></lightning-button>
+                    </footer>
+                </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+
+
+    <!-- Modal Update -->
+    <template if:true={isUpdateModalOpen}>
+        <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open slds-modal_medium"
+            aria-labelledby="modal-heading-02" aria-modal="true" aria-describedby="modal-content-id-2">
+            <div class="slds-modal__container">
+                <!-- Modal Header -->
+                <header class="slds-modal__header">
+                    <lightning-button-icon icon-name="utility:close" onclick={closeUpdateModal} alternative-text="Close"
+                        variant="bare-inverse" class="slds-modal__close"></lightning-button-icon>
+                </header>
+
+                <!-- Modal Body -->
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-4">
+                    <!-- <p>Selected Student ID: {selectedStudentId}</p> In ra studentId -->
+
+
+                    <!-- Lwc_DetailStudent -->
+                    <c-Lwc_-update-student record-id={selectedStudentId}></c-Lwc_-update-student>
+                </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+
+    <!-- Modal create -->
+    <template if:true={isCreateModalOpen}>
+        <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open slds-modal_medium"
+            aria-labelledby="modal-heading-02" aria-modal="true" aria-describedby="modal-content-id-2">
+            <div class="slds-modal__container">
+                <!-- Modal Header -->
+                <header class="slds-modal__header">
+                    <lightning-button-icon icon-name="utility:close" onclick={closeCreateModal} alternative-text="Close"
+                        variant="bare-inverse" class="slds-modal__close"></lightning-button-icon>
+                </header>
+
+                <!-- Modal Body -->
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-5">
+                    <!-- <p>Selected Student ID: {selectedStudentId}</p> In ra studentId -->
+
+
+                    <!-- Lwc_DetailStudent -->
+                    <c-Lwc_-create-student></c-Lwc_-create-student>
+                </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+
+</template>

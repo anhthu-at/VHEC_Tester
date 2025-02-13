@@ -1,0 +1,95 @@
+<aura:component controller="CMP_UpdateStudentCtrls" implements="force:appHostable,flexipage:availableForAllPageTypes"
+    access="global">
+    <!-- Define student and other necessary attributes -->
+    <aura:attribute name="student" type="Student__c" />
+    <aura:attribute name="hasStudent" type="Boolean" default="false" />
+    <aura:attribute name="recordId" type="String" />
+
+    <!-- Gender -->
+    <aura:attribute name="loadGenderOptions" type="List" />
+    <aura:attribute name="selectedGender" type="String" />
+
+    <aura:attribute name="targetObjectNameGender" type="String" default="Student__c" />
+    <aura:attribute name="targetFieldNameGender" type="String" default="Gender__c" />
+    <aura:attribute name="picklistOptionsGender" type="List" />
+    <aura:attribute name="selectedValueGender" type="String" />
+
+    <!-- Status -->
+    <aura:attribute name="selectedStatus" type="String" />
+    <aura:attribute name="targetObjectNameStatus" type="String" default="Student__c" />
+    <aura:attribute name="targetFieldNameStatus" type="String" default="LearningStatus__c" />
+    <aura:attribute name="picklistOptionsStatus" type="List" />
+    <aura:attribute name="selectedValueStatus" type="String" />
+
+    <!-- Class -->
+    <aura:attribute name="classOptions" type="List" />
+    <aura:attribute name="selectedClass" type="String" />
+
+    <!-- Save Name APEX -->
+
+
+
+    <!-- Handler for initialization -->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <!-- Handlers -->
+    <aura:handler name="init" value="{!this}" action="{!c.getDataPickList}" />
+
+    <!-- Handler to load class options on component initialization -->
+    <aura:handler name="init" value="{!this}" action="{!c.loadClassOptions}" />
+
+    <!-- get gender and learning status old -->
+    <!-- Handlers gender options -->
+    <aura:handler name="init" value="{!this}" action="{!c.fetchGenderOptions}" />
+
+    <!-- Handler to fetch LearningStatus options on component load -->
+    <aura:handler name="init" value="{!this}" action="{!c.fetchLearningStatusOptions}" />
+
+
+
+
+    <!-- Modal content displaying student info or no student found message -->
+    <aura:if isTrue="{!v.hasStudent}">
+        <lightning:card title="学生を編集">
+            <div class="slds-p-around_medium">
+                <!-- Student first name input -->
+                <lightning:input label="姓" value="{!v.student.Firstname__c}" name="Firstname__c" />
+
+                <!-- Student last name input -->
+                <lightning:input label="名" value="{!v.student.Lastname__c}" name="Lastname__c" />
+
+                <!-- Student birthday input -->
+                <lightning:input label="生年月日" value="{!v.student.Birthday__c}" type="date" name="Birthday__c" />
+
+                <!-- Class Select -->
+                <!-- <lightning:select label="Class" value="{!v.selectedValueGender}">
+                    <aura:iteration items="{!v.classOptions}" var="option">
+                        <option value="{!option.value}">{!option.label}</option>
+                    </aura:iteration>
+                </lightning:select> -->
+
+                <lightning:combobox required="true" name="class" label="クラス" value="{!v.student.Class_look__c}"
+                    options="{!v.classOptions}" placeholder="--なし--" />
+
+                <lightning:combobox name="gender" label="性別" value="{!v.student.Gender__c}"
+                    options="{!v.picklistOptionsGender}" placeholder="--なし--" />
+
+                <lightning:combobox name="status" label="ステータス" value="{!v.student.LearningStatus__c}"
+                    options="{!v.picklistOptionsStatus}" placeholder="--なし--" />
+
+                <!-- Update button -->
+                <div class="slds-m-top_medium">
+                    <lightning:button label="保存" variant="brand" onclick="{!c.updateStudents}" />
+                </div>
+            </div>
+        </lightning:card>
+    </aura:if>
+
+    <!-- If no student found, show a message -->
+    <aura:if isTrue="{!not(v.hasStudent)}">
+        <lightning:card title="Thông Báo">
+            <div class="slds-p-around_medium">
+                <p>Không tìm thấy sinh viên với mã ID này.</p>
+            </div>
+        </lightning:card>
+    </aura:if>
+</aura:component>

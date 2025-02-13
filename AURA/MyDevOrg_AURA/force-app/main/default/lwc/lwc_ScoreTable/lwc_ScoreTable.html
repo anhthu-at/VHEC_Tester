@@ -1,0 +1,75 @@
+<template>
+    <lightning-card title="学習成果" icon-name="custom:custom63">
+        <div class="slds-m-around_medium">
+            <div class="slds-grid slds-wrap slds-m-bottom_medium">
+                <div class="slds-col slds-size_1-of-2">
+                    <p><strong>合計クレジット: </strong>21</p>
+                </div>
+                <div class="slds-col slds-size_1-of-2">
+                    <p><strong>平均学分績点: </strong>5.45</p>
+                </div>
+            </div>
+            <p><strong>学期2, 2023 - 2024</strong></p>
+            <table
+                class="slds-table slds-table_bordered slds-table_col-bordered slds-table_fixed-layout slds-no-row-hover">
+                <thead>
+                    <tr class="slds-text-title_caps">
+                        <th scope="col">
+                            <div class="slds-truncate">科目コード</div>
+                        </th>
+                        <th scope="col">
+                            <div class="slds-truncate">クレジット</div>
+                        </th>
+                        <th scope="col">
+                            <div class="slds-truncate">進捗点</div>
+                        </th>
+                        <th scope="col">
+                            <div class="slds-truncate">実用点</div>
+                        </th>
+                        <th scope="col">
+                            <div class="slds-truncate">中間試験点</div>
+                        </th>
+                        <th scope="col">
+                            <div class="slds-truncate">期末試験点</div>
+                        </th>
+                        <th scope="col">
+                            <div class="slds-truncate">科目平均点</div>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template for:each={subjects} for:item="subject">
+                        <tr key={subject.code}>
+                            <td>
+                                <div class="slds-truncate">{subject.code}</div>
+                            </td>
+                            <td>
+                                <div class="slds-truncate">{subject.credits}</div>
+                            </td>
+                            <td>
+                                <div class="slds-truncate">{subject.progressScore}</div>
+                            </td>
+                            <td>
+                                <div class="slds-truncate">{subject.practicalScore}</div>
+                            </td>
+                            <td>
+                                <div class="slds-truncate">{subject.midtermScore}</div>
+                            </td>
+                            <td>
+                                <div class="slds-truncate">{subject.finalExamScore}</div>
+                            </td>
+                            <td>
+                                <div class="slds-truncate">{subject.averageScore}</div>
+                            </td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+            <div class="header">
+                <div>学期平均: 11</div>
+                <div>5.26</div>
+            </div>
+            <lightning-button label="PDF出力" onclick={handleExport} class="slds-m-top_medium"></lightning-button>
+        </div>
+    </lightning-card>
+</template>
